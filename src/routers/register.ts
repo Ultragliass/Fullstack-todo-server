@@ -8,6 +8,13 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
 
+  const result = registerSchema.validate({ username, password });
+
+  if (result.error) {
+    res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
+    return;
+  }
+
   if (await checkIfUserExists(username)) {
     res
       .status(409)
@@ -15,12 +22,7 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const result = registerSchema.validate({ username, password });
-
-  if (result.error) {
-    res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
-    return;
-  }
+  
 });
 
-export {router as register};
+export { router as register };

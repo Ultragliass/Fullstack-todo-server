@@ -2,8 +2,7 @@ import { checkIfUserExists, addUser } from "../actions/userActions";
 import { registerSchema } from "../schemas/register";
 import express from "express";
 import jwt from "jsonwebtoken";
-
-const SECRET: string = process.env.JWT_SECRET || "test";
+import { SECRET } from "../secret";
 
 const router = express.Router();
 

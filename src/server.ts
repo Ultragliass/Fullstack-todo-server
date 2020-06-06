@@ -2,10 +2,11 @@ import {register} from "./routers/register";
 import express, { Errback } from "express";
 import expressJwt from "express-jwt";
 import cors from "cors";
+import { SECRET } from "./secret";
+import { login } from "./routers/login";
 
 const app = express();
 const PORT: string | number = process.env.PORT || 3001;
-const SECRET: string = process.env.JWT_SECRET || "test";
 
 app.use(express.json());
 
@@ -16,6 +17,8 @@ app.use(
 );
 
 app.use("/register", register);
+
+app.use("/login", login);
 
 app.all("/", (req, res) => {
   res.status(404).send("Were you looking for something?");

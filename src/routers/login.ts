@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const token = jwt.sign({ ...userDetails }, SECRET);
+  const token = jwt.sign(userDetails, SECRET);
 
   res.send(JSON.stringify({ success: true, token }));
 });

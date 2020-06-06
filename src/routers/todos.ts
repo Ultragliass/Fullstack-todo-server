@@ -1,12 +1,23 @@
 import express, { Request } from "express";
-import jwt from "express-jwt";
+import { getUserTodos } from "../actions/todoActions";
 
 const router = express.Router();
 
-router.get("/", (req: any, res) => {
-  const userDetails = req.user;
+router.get("/", async (req: any, res) => {
+  const [{ username, id }] = req.user;
 
-  res.send(userDetails);
+  const todos = await getUserTodos(id);
+
+  res.send(
+    JSON.stringify({
+      success: true,
+      userData: {
+        todos,
+        username,
+        id,
+      },
+    })
+  );
 });
 
 export { router as todos };

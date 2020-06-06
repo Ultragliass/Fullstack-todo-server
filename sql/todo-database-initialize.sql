@@ -10,19 +10,18 @@ CREATE TABLE users (
   password varchar(30) NOT NULL,
   PRIMARY KEY (id),
   INDEX username (username)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 DROP TABLE IF EXISTS todos;
 
 CREATE TABLE todos (
-   id int NOT NULL AUTO_INCREMENT,
-   userId int NOT NULL,
-   description varchar(500) NOT NULL,
-   creationDate datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-   deadline date NOT NULL,
-   complete tinyint DEFAULT 0,
-   PRIMARY KEY (id),
-   INDEX userId (userId),
-   FOREIGN KEY (userId) REFERENCES users (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+  id int NOT NULL AUTO_INCREMENT,
+  userId int NOT NULL,
+  description varchar(500) NOT NULL,
+  creationDate datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deadline date NOT NULL,
+  complete tinyint DEFAULT 0,
+  PRIMARY KEY (id),
+  INDEX userId (userId),
+  FOREIGN KEY (userId) REFERENCES users (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;

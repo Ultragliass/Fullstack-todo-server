@@ -11,14 +11,12 @@ router.post("/", async (req, res) => {
   const userDetails = await authorizeUser(username, password);
 
   if (!userDetails.length) {
-    res
-      .status(401)
-      .send(
-        JSON.stringify({
-          success: false,
-          msg: "Username and password don't match.",
-        })
-      );
+    res.status(401).send(
+      JSON.stringify({
+        success: false,
+        msg: "Username and password don't match.",
+      })
+    );
     return;
   }
 

@@ -1,5 +1,9 @@
 import express, { Request } from "express";
-import { getUserTodos, addTodo } from "../actions/todoActions";
+import {
+  getUserTodos,
+  addTodo,
+  toggleTaskCompletion,
+} from "../actions/todoActions";
 import { todoSchema } from "../schemas/todo";
 
 const router = express.Router();
@@ -22,23 +26,48 @@ router.get("/", async (req: any, res) => {
 });
 
 router.post("/", async (req: any, res) => {
-    const [{id}] = req.user;
-    const todo = req.body;
-    
-    const result = todoSchema.validate({id, ...todo});
+  const [{ id }] = req.user;
+  const todo = req.body;
 
-    if (result.error) {
-        res.status(400).send(JSON.stringify({success: false, msg: result.error}));
-        return;
-    }
+  const result = todoSchema.validate({ id, ...todo });
 
-    const response = await addTodo(id, todo.description, todo.deadline);
+  if (result.error) {
+    res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
+    return;
+  }
 
-    if (response) {
-        res.send(JSON.stringify({success: true, msg: "Todo added successfully."}));
-    } else {
-        res.status(500).send(JSON.stringify({success: false, msg: "Oops! Something went wrong..."}));
-    }
+  const response = await addTodo(id, todo.description, todo.deadline);
+
+  if (response) {
+    res.send(
+      JSON.stringify({ success: true, msg: "Todo added successfully." })
+    );
+  } else {
+    res
+      .status(500)
+      .send(
+        JSON.stringify({ success: false, msg: "Oops! Something went wrong..." })
+      );
+  }
+});
+
+router.put("/", async (req: any, res) => {
+  const [{ id }] = req.user;
+  const { todoId } = req.body;
+
+  const result = toggleTaskCompletion(todoId, id);
+
+  if (result) {
+    res.send(
+      JSON.stringify({ success: true, msg: "Todo toggled successfully." })
+    );
+  } else {
+    res
+      .status(500)
+      .send(
+        JSON.stringify({ success: false, msg: "Oops! Something went wrong..." })
+      );
+  }
 });
 
 export { router as todos };

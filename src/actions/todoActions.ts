@@ -23,3 +23,15 @@ export async function addTodo(
 
   return result[0].affectedRows;
 }
+
+export async function toggleTaskCompletion(
+  todoId: number,
+  id: number
+): Promise<number> {
+  const [result] = await sql.execute<ResultSetHeader>(
+    "UPDATE todos SET complete = NOT complete WHERE id = ? AND userId = ?",
+    [todoId, id]
+  );
+
+  return result.affectedRows;
+}

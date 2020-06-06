@@ -1,23 +1,30 @@
-import { authorizeUser } from '../actions/userActions';
-import { SECRET } from '../secret';
-import express, { Router } from 'express';
-import jwt from 'jsonwebtoken';
+import { authorizeUser } from "../actions/userActions";
+import { SECRET } from "../secret";
+import express, { Router } from "express";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-    const {username, password} = req.body;
+  const { username, password } = req.body;
 
-    const userDetails = await authorizeUser(username, password);
+  const userDetails = await authorizeUser(username, password);
 
-    if (!userDetails.length) {
-        res.status(401).send(JSON.stringify({success: false, msg: "Username and password don't match."}));
-        return;
-    } 
+  if (!userDetails.length) {
+    res
+      .status(401)
+      .send(
+        JSON.stringify({
+          success: false,
+          msg: "Username and password don't match.",
+        })
+      );
+    return;
+  }
 
-    const token = jwt.sign({...userDetails}, SECRET);
+  const token = jwt.sign({ ...userDetails }, SECRET);
 
-    res.send(JSON.stringify({success: true, token}));
+  res.send(JSON.stringify({ success: true, token }));
 });
 
-export {router as login};
+export { router as login };

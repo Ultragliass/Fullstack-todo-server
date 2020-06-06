@@ -1,9 +1,10 @@
-import {register} from "./routers/register";
-import express, { Errback } from "express";
+import { register } from "./routers/register";
+import { login } from "./routers/login";
+import { todos } from "./routers/todos";
+import { SECRET } from "./secret";
+import express, { Request, Response, NextFunction } from "express";
 import expressJwt from "express-jwt";
 import cors from "cors";
-import { SECRET } from "./secret";
-import { login } from "./routers/login";
 
 const app = express();
 const PORT: string | number = process.env.PORT || 3001;
@@ -20,11 +21,13 @@ app.use("/register", register);
 
 app.use("/login", login);
 
+app.use("/todos", todos);
+
 app.all("/", (req, res) => {
   res.status(404).send("Were you looking for something?");
 });
 
-app.use((err: Errback, req: any, res: any, next: any) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.log(err);
 
   res.status(500).send("Oops! Something went wrong...");

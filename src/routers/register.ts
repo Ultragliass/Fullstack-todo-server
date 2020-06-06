@@ -25,9 +25,9 @@ router.post("/", async (req, res) => {
 
   const id = await addUser(username, password);
 
-  const token = jwt.sign({username, id}, SECRET);
+  const token = jwt.sign({ username, id }, SECRET);
 
-  res.send(JSON.stringify({success: true, token}));
+  res.send(JSON.stringify({ success: true, token }));
 });
 
 export { router as register };

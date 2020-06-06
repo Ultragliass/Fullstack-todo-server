@@ -1,4 +1,4 @@
-import { checkIfUserExists } from "../actions/register";
+import { checkIfUserExists, addUser } from "../actions/register";
 import { registerSchema } from "../schemas/register";
 import express from "express";
 import jwt from "jsonwebtoken";
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  
+  const userId = addUser(username, password);
 });
 
 export { router as register };

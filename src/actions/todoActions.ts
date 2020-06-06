@@ -1,11 +1,25 @@
-import { sql } from "../sql";
 import { Todo } from "../models/Todo";
-import { RowDataPacket } from "mysql2";
+import { sql } from "../sql";
+import { RowDataPacket, ResultSetHeader } from "mysql2";
 
-export async function getUserTodos(userId: number){
-    const [result] = await sql.execute<RowDataPacket[]>("SELECT id, description, deadline, complete FROM todos WHERE userId = ?", [userId]);
+export async function getUserTodos(userId: number): Promise<Todo[]> {
+  const [result] = await sql.execute<RowDataPacket[]>(
+    "SELECT id, description, deadline, complete FROM todos WHERE userId = ?",
+    [userId]
+  );
 
-    console.log(result)
-    
-    return result as Todo[];
+  return result as Todo[];
+}
+
+export async function addTodo(
+  userId: number,
+  description: string,
+  deadline: Date
+): Promise<number> {
+  const result = await sql.execute<ResultSetHeader>(
+    "INSERT INTO todos (userId, description, deadline) VALUES (?, ?, ?)",
+    [userId, description, deadline]
+  );
+
+  return result[0].affectedRows;
 }

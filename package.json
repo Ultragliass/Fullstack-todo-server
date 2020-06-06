@@ -5,10 +5,12 @@
   "main": "server.ts",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@types/mysql2": "github:types/mysql2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-jwt": "^5.3.3",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.1.0"
   },
   "devDependencies": {
     "@types/hapi__joi": "^17.1.2",

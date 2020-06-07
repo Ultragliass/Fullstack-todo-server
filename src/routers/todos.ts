@@ -10,7 +10,7 @@ import { todoSchema } from "../schemas/todo";
 const router = express.Router();
 
 router.get("/", async (req: any, res) => {
-  const { username, userId } = req.user; //The username and userId should come from the user's token.
+  const [{ username, userId }] = req.user; //The username and userId should come from the user's token.
 
   const todos = await getUserTodos(userId); //Runs the sql query to get all the user's todos, by his userId.
 
@@ -26,7 +26,7 @@ router.get("/", async (req: any, res) => {
 });
 
 router.post("/", async (req: any, res) => {
-  const { userId } = req.user;
+  const [{ userId }] = req.user;
   const todo = req.body; //We expect the client to send us a todo.
 
   const result = todoSchema.validate({ userId, ...todo }); //Validates that the todo has the appropriate structure.
@@ -56,7 +56,7 @@ router.post("/", async (req: any, res) => {
 });
 
 router.put("/", async (req: any, res) => {
-  const { userId } = req.user;
+  const [{ userId }] = req.user;
   const { todoId } = req.body;
 
   const result = toggleTaskCompletion(todoId, userId); //Toggles a todo's completeion boolean value.
@@ -75,7 +75,7 @@ router.put("/", async (req: any, res) => {
 });
 
 router.delete("/", async (req: any, res) => {
-  const { userId } = req.user;
+  const [{ userId }] = req.user;
   const { todoId } = req.body;
 
   const result = await deleteTodo(todoId, userId); //Delets a specific todo, requires both the todo's id, and the user's id.

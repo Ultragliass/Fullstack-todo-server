@@ -26,7 +26,7 @@ export async function addTodo(
     [userId, description, deadline]
   ); //Inserts the values of a new todo to the sql table. The id and createdAt are implemented automatically in the table.
 
-  return result.affectedRows; //Returns the number of affected rows, should be only 1. If it's 0, there might have been incorrect information received.
+  return result.insertId; //Returns the inserted id of the added todo.
 }
 
 export async function toggleTaskCompletion(

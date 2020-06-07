@@ -1,6 +1,6 @@
 import { authorizeUser } from "../actions/userActions";
 import { SECRET } from "../secret";
-import express, { Router } from "express";
+import express from "express";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();

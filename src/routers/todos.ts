@@ -1,4 +1,4 @@
-import express, { Request } from "express";
+import express from "express";
 import {
   getUserTodos,
   addTodo,
@@ -9,9 +9,9 @@ import { todoSchema } from "../schemas/todo";
 const router = express.Router();
 
 router.get("/", async (req: any, res) => {
-  const [{ username, id }] = req.user;
+  const [{ username, userId }] = req.user;
 
-  const todos = await getUserTodos(id);
+  const todos = await getUserTodos(userId);
 
   res.send(
     JSON.stringify({
@@ -19,24 +19,24 @@ router.get("/", async (req: any, res) => {
       userData: {
         todos,
         username,
-        id,
+        userId,
       },
     })
   );
 });
 
 router.post("/", async (req: any, res) => {
-  const [{ id }] = req.user;
+  const [{ userId}] = req.user;
   const todo = req.body;
 
-  const result = todoSchema.validate({ id, ...todo });
+  const result = todoSchema.validate({ userId, ...todo });
 
   if (result.error) {
     res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
     return;
   }
 
-  const response = await addTodo(id, todo.description, todo.deadline);
+  const response = await addTodo(userId, todo.description, todo.deadline);
 
   if (response) {
     res.send(
@@ -52,10 +52,10 @@ router.post("/", async (req: any, res) => {
 });
 
 router.put("/", async (req: any, res) => {
-  const [{ id }] = req.user;
+  const [{ userId }] = req.user;
   const { todoId } = req.body;
 
-  const result = toggleTaskCompletion(todoId, id);
+  const result = toggleTaskCompletion(todoId, userId);
 
   if (result) {
     res.send(
@@ -68,6 +68,12 @@ router.put("/", async (req: any, res) => {
         JSON.stringify({ success: false, msg: "Oops! Something went wrong..." })
       );
   }
+});
+
+router.delete("/", async (req: any, res) => {
+  const [{ todoId }] = req.body;
+
+  
 });
 
 export { router as todos };

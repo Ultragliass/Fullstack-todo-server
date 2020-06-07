@@ -23,9 +23,9 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const id = await addUser(username, password);
+  const userId = await addUser(username, password);
 
-  const token = jwt.sign({ username, id }, SECRET);
+  const token = jwt.sign({ username, userId }, SECRET);
 
   res.send(JSON.stringify({ success: true, token }));
 });

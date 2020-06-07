@@ -37,7 +37,7 @@ export async function toggleTaskCompletion(
 }
 
 export async function deleteTodo(todoId: number, userId: number): Promise<number> {
-  const [result] = await sql.execute<ResultSetHeader>("DELETE todos WHERE id = ? AND userId = ?", [todoId, userId]);
+  const [result] = await sql.execute<ResultSetHeader>("DELETE FROM todos WHERE id = ? AND userId = ?", [todoId, userId]);
 
   return result.affectedRows;
 }

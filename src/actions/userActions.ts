@@ -31,7 +31,7 @@ export async function authorizeUser(
   password: string
 ): Promise<RowDataPacket[]> {
   const [result] = await sql.execute<RowDataPacket[]>(
-    "SELECT id, username FROM users WHERE username = ? AND password = ?",
+    "SELECT id AS userId, username FROM users WHERE username = ? AND password = ?",
     [username, password]
   );
 

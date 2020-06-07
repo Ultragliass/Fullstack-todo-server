@@ -3,13 +3,14 @@ import {
   getUserTodos,
   addTodo,
   toggleTaskCompletion,
+  deleteTodo,
 } from "../actions/todoActions";
 import { todoSchema } from "../schemas/todo";
 
 const router = express.Router();
 
 router.get("/", async (req: any, res) => {
-  const [{ username, userId }] = req.user;
+  const { username, userId } = req.user;
 
   const todos = await getUserTodos(userId);
 
@@ -26,7 +27,7 @@ router.get("/", async (req: any, res) => {
 });
 
 router.post("/", async (req: any, res) => {
-  const [{ userId}] = req.user;
+  const { userId } = req.user;
   const todo = req.body;
 
   const result = todoSchema.validate({ userId, ...todo });
@@ -52,7 +53,7 @@ router.post("/", async (req: any, res) => {
 });
 
 router.put("/", async (req: any, res) => {
-  const [{ userId }] = req.user;
+  const { userId } = req.user;
   const { todoId } = req.body;
 
   const result = toggleTaskCompletion(todoId, userId);
@@ -71,10 +72,22 @@ router.put("/", async (req: any, res) => {
 });
 
 router.delete("/", async (req: any, res) => {
-  const [{userId}] = req.user;
+  const { userId } = req.user;
   const { todoId } = req.body;
 
-  
+  const result = await deleteTodo(todoId, userId);
+
+  if (result) {
+    res.send(
+      JSON.stringify({ success: true, msg: "Todo deleted successfully." })
+    );
+  } else {
+    res
+      .status(500)
+      .send(
+        JSON.stringify({ success: false, msg: "Oops! Something went wrong..." })
+      );
+  }
 });
 
 export { router as todos };

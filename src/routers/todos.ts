@@ -32,14 +32,14 @@ router.get("/", async (req: any, res) => {
 
 router.post("/", async (req: any, res) => {
   const [{ userId }] = req.user;
-  const todo = req.body; //We expect the client to send us a todo.
+  const {description, deadline} = req.body; //We expect the client to send us a todo.
 
   if (!userId) {
     res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
     return;
   }
 
-  const result = todoSchema.validate({ userId, ...todo }); //Validates that the todo has the appropriate structure.
+  const result = todoSchema.validate({ userId, description, deadline }); //Validates that the todo has the appropriate structure.
 
   if (result.error) {
     //If it doesn't, it sends the client the appropriate error.
@@ -50,7 +50,7 @@ router.post("/", async (req: any, res) => {
     return;
   }
 
-  const response = await addTodo(userId, todo.description, todo.deadline); //Adds a new todo to the database with the user's id.
+  const response = await addTodo(userId, description, deadline); //Adds a new todo to the database with the user's id.
 
   if (response) {
     res.send(

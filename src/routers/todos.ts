@@ -33,7 +33,10 @@ router.post("/", async (req: any, res) => {
 
   if (result.error) {
     //If it doesn't, it sends the client the appropriate error.
-    res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
+
+    const msg = result.error.details[0].message;
+
+    res.status(400).send(JSON.stringify({ success: false, msg }));
     return;
   }
 

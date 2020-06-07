@@ -50,7 +50,7 @@ router.post("/", async (req: any, res) => {
     return;
   }
 
-  const response = await addTodo(userId, description, deadline); //Adds a new todo to the database with the user's id.
+  const response = await addTodo(userId, description, new Date(deadline)); //Adds a new todo to the database with the user's id.
 
   if (response) {
     res.send(

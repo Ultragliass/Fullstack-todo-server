@@ -12,6 +12,11 @@ const router = express.Router();
 router.get("/", async (req: any, res) => {
   const [{ username, userId }] = req.user; //The username and userId should come from the user's token.
 
+  if (!username || !userId) {
+    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    return;
+  }
+
   const todos = await getUserTodos(userId); //Runs the sql query to get all the user's todos, by his userId.
 
   res.send(
@@ -28,6 +33,11 @@ router.get("/", async (req: any, res) => {
 router.post("/", async (req: any, res) => {
   const [{ userId }] = req.user;
   const todo = req.body; //We expect the client to send us a todo.
+
+  if (!userId) {
+    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    return;
+  }
 
   const result = todoSchema.validate({ userId, ...todo }); //Validates that the todo has the appropriate structure.
 
@@ -59,6 +69,11 @@ router.put("/", async (req: any, res) => {
   const [{ userId }] = req.user;
   const { todoId } = req.body;
 
+  if (!userId) {
+    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    return;
+  }
+
   const result = toggleTaskCompletion(todoId, userId); //Toggles a todo's completeion boolean value.
 
   if (result) {
@@ -77,6 +92,11 @@ router.put("/", async (req: any, res) => {
 router.delete("/", async (req: any, res) => {
   const [{ userId }] = req.user;
   const { todoId } = req.body;
+
+  if (!userId) {
+    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    return;
+  }
 
   const result = await deleteTodo(todoId, userId); //Delets a specific todo, requires both the todo's id, and the user's id.
 

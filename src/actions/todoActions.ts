@@ -4,7 +4,7 @@ import { RowDataPacket, ResultSetHeader } from "mysql2";
 
 /*
 Generic type RowDataPacket is the interface for the mysql2 SELECT return statement.
-Generic type ResultSetHeader is the interface for the mysql1 INSERT, UPDATE, and DELETE return statements.
+Generic type ResultSetHeader is the interface for the mysql2 INSERT, UPDATE, and DELETE return statements.
 */
 
 export async function getUserTodos(userId: number): Promise<Todo[]> {

@@ -20,7 +20,6 @@ router.get("/", async (req: any, res) => {
       userData: {
         todos,
         username,
-        userId,
       },
     })
   );
@@ -32,7 +31,8 @@ router.post("/", async (req: any, res) => {
 
   const result = todoSchema.validate({ userId, ...todo }); //Validates that the todo has the appropriate structure.
 
-  if (result.error) { //If it doesn't, it sends the client the appropriate error.
+  if (result.error) {
+    //If it doesn't, it sends the client the appropriate error.
     res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
     return;
   }

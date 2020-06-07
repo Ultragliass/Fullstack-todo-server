@@ -6,11 +6,11 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body; //We expect the client to send us the username and password.
 
-  const userDetails = await authorizeUser(username, password);
+  const userDetails = await authorizeUser(username, password); //Runs our sql query to see if the username and password match.
 
-  if (!userDetails.length) {
+  if (!userDetails.length) { //If we get an empty array, the username and password did not match.
     res.status(401).send(
       JSON.stringify({
         success: false,
@@ -20,9 +20,9 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const token = jwt.sign(userDetails, SECRET);
+  const token = jwt.sign(userDetails, SECRET); //If they did match, create our token with the details we want. (userId and username)
 
-  res.send(JSON.stringify({ success: true, token }));
+  res.send(JSON.stringify({ success: true, token })); //We send the token to our client.
 });
 
 export { router as login };

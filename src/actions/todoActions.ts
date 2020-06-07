@@ -2,13 +2,18 @@ import { Todo } from "../models/Todo";
 import { sql } from "../sql";
 import { RowDataPacket, ResultSetHeader } from "mysql2";
 
+/*
+Generic type RowDataPacket is the interface for the mysql2 SELECT return statement.
+Generic type ResultSetHeader is the interface for the mysql1 INSERT, UPDATE, and DELETE return statements.
+*/
+
 export async function getUserTodos(userId: number): Promise<Todo[]> {
   const [result] = await sql.execute<RowDataPacket[]>(
     "SELECT id, description, deadline, complete FROM todos WHERE userId = ?",
     [userId]
-  );
+  ); //Selects only the meaningful data for the user's todos.
 
-  return result as Todo[];
+  return result as Todo[]; //Returns the todos as their corresponding interface.
 }
 
 export async function addTodo(
@@ -19,9 +24,9 @@ export async function addTodo(
   const [result] = await sql.execute<ResultSetHeader>(
     "INSERT INTO todos (userId, description, deadline) VALUES (?, ?, ?)",
     [userId, description, deadline]
-  );
+  ); //Inserts the values of a new todo to the sql table. The id and createdAt are implemented automatically in the table.
 
-  return result.affectedRows;
+  return result.affectedRows; //Returns the number of affected rows, should be only 1. If it's 0, there might have been incorrect information received.
 }
 
 export async function toggleTaskCompletion(
@@ -31,13 +36,19 @@ export async function toggleTaskCompletion(
   const [result] = await sql.execute<ResultSetHeader>(
     "UPDATE todos SET complete = NOT complete WHERE id = ? AND userId = ?",
     [todoId, id]
-  );
+  ); //Reverses the boolean statement (i.e true => false or false => true) for a todo completion.
 
   return result.affectedRows;
 }
 
-export async function deleteTodo(todoId: number, userId: number): Promise<number> {
-  const [result] = await sql.execute<ResultSetHeader>("DELETE FROM todos WHERE id = ? AND userId = ?", [todoId, userId]);
+export async function deleteTodo(
+  todoId: number,
+  userId: number
+): Promise<number> {
+  const [result] = await sql.execute<ResultSetHeader>(
+    "DELETE FROM todos WHERE id = ? AND userId = ?",
+    [todoId, userId]
+  ); //Delets a single todo, requires both the user id and the todo's id.
 
   return result.affectedRows;
 }

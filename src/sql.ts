@@ -6,3 +6,8 @@ export const sql = mysql.createPool({
   password: "123456",
   database: "todo",
 });
+
+/*
+Creates the sql pool to our Mysql server.
+User and password should be your own Mysql login info.
+*/

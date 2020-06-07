@@ -10,9 +10,9 @@ import { todoSchema } from "../schemas/todo";
 const router = express.Router();
 
 router.get("/", async (req: any, res) => {
-  const { username, userId } = req.user;
+  const { username, userId } = req.user; //The username and userId should come from the user's token.
 
-  const todos = await getUserTodos(userId);
+  const todos = await getUserTodos(userId); //Runs the sql query to get all the user's todos, by his userId.
 
   res.send(
     JSON.stringify({
@@ -28,16 +28,16 @@ router.get("/", async (req: any, res) => {
 
 router.post("/", async (req: any, res) => {
   const { userId } = req.user;
-  const todo = req.body;
+  const todo = req.body; //We expect the client to send us a todo.
 
-  const result = todoSchema.validate({ userId, ...todo });
+  const result = todoSchema.validate({ userId, ...todo }); //Validates that the todo has the appropriate structure.
 
-  if (result.error) {
+  if (result.error) { //If it doesn't, it sends the client the appropriate error.
     res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
     return;
   }
 
-  const response = await addTodo(userId, todo.description, todo.deadline);
+  const response = await addTodo(userId, todo.description, todo.deadline); //Adds a new todo to the database with the user's id.
 
   if (response) {
     res.send(
@@ -56,7 +56,7 @@ router.put("/", async (req: any, res) => {
   const { userId } = req.user;
   const { todoId } = req.body;
 
-  const result = toggleTaskCompletion(todoId, userId);
+  const result = toggleTaskCompletion(todoId, userId); //Toggles a todo's completeion boolean value.
 
   if (result) {
     res.send(
@@ -75,7 +75,7 @@ router.delete("/", async (req: any, res) => {
   const { userId } = req.user;
   const { todoId } = req.body;
 
-  const result = await deleteTodo(todoId, userId);
+  const result = await deleteTodo(todoId, userId); //Delets a specific todo, requires both the todo's id, and the user's id.
 
   if (result) {
     res.send(

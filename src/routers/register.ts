@@ -7,25 +7,25 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body; //We expect the client to send us a username and password.
 
-  const result = registerSchema.validate({ username, password });
+  const result = registerSchema.validate({ username, password }); //Validates that the username and password is structured appropriately.
 
-  if (result.error) {
+  if (result.error) { //If they aren't, we respond to the client with the appropriate error.
     res.status(400).send(JSON.stringify({ success: false, msg: result.error }));
     return;
   }
 
-  if (await checkIfUserExists(username)) {
+  if (await checkIfUserExists(username)) { //Checks if the username already exists.
     res
       .status(409)
       .send(JSON.stringify({ success: false, msg: "User already exists." }));
     return;
   }
 
-  const userId = await addUser(username, password);
+  const userId = await addUser(username, password); //Adds the user to the database.
 
-  const token = jwt.sign({ username, userId }, SECRET);
+  const token = jwt.sign({ username, userId }, SECRET); //Creates a token for the client with the appropriate data. (userId and username)
 
   res.send(JSON.stringify({ success: true, token }));
 });

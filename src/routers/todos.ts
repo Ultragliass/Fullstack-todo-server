@@ -54,7 +54,7 @@ router.post("/", async (req: any, res) => {
 
   if (response) {
     res.send(
-      JSON.stringify({ success: true, msg: "Todo added successfully." })
+      JSON.stringify({ success: true, id: response })
     );
   } else {
     res

@@ -16,12 +16,12 @@ export async function addTodo(
   description: string,
   deadline: Date
 ): Promise<number> {
-  const result = await sql.execute<ResultSetHeader>(
+  const [result] = await sql.execute<ResultSetHeader>(
     "INSERT INTO todos (userId, description, deadline) VALUES (?, ?, ?)",
     [userId, description, deadline]
   );
 
-  return result[0].affectedRows;
+  return result.affectedRows;
 }
 
 export async function toggleTaskCompletion(
@@ -32,6 +32,12 @@ export async function toggleTaskCompletion(
     "UPDATE todos SET complete = NOT complete WHERE id = ? AND userId = ?",
     [todoId, id]
   );
+
+  return result.affectedRows;
+}
+
+export async function deleteTodo(todoId: number, userId: number): Promise<number> {
+  const [result] = await sql.execute<ResultSetHeader>("DELETE todos WHERE id = ? AND userId = ?", [todoId, userId]);
 
   return result.affectedRows;
 }

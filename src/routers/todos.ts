@@ -71,7 +71,8 @@ router.put("/", async (req: any, res) => {
 });
 
 router.delete("/", async (req: any, res) => {
-  const [{ todoId }] = req.body;
+  const [{userId}] = req.user;
+  const { todoId } = req.body;
 
   
 });

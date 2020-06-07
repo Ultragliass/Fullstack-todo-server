@@ -8,6 +8,11 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const { username, password } = req.body; //We expect the client to send us the username and password.
 
+  if (!username || !password) {
+    res.status(400).send(JSON.stringify({success:false, msg: "Both username and password must be provided." }));
+    return;
+  }
+
   const userDetails = await authorizeUser(username, password); //Runs our sql query to see if the username and password match.
 
   if (!userDetails.length) { //If we get an empty array, the username and password did not match.

@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
   username varchar(20) NOT NULL,
-  password varchar(30) NOT NULL,
+  password varchar(30) COLLATE latin1_bin NOT NULL,
   PRIMARY KEY (id),
   INDEX username (username)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;

@@ -10,10 +10,12 @@ import { todoSchema } from "../schemas/todo";
 const router = express.Router();
 
 router.get("/", async (req: any, res) => {
-  const [{ username, userId }] = req.user; //The username and userId should come from the user's token.
+  const { username, userId } = req.user; //The username and userId should come from the user's token.
 
   if (!username || !userId) {
-    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    res
+      .status(500)
+      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
     return;
   }
 
@@ -31,11 +33,13 @@ router.get("/", async (req: any, res) => {
 });
 
 router.post("/", async (req: any, res) => {
-  const [{ userId }] = req.user;
-  const {description, deadline} = req.body; //We expect the client to send us a todo.
+  const { userId } = req.user;
+  const { description, deadline } = req.body; //We expect the client to send us a todo.
 
   if (!userId) {
-    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    res
+      .status(500)
+      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
     return;
   }
 
@@ -53,9 +57,7 @@ router.post("/", async (req: any, res) => {
   const response = await addTodo(userId, description, new Date(deadline)); //Adds a new todo to the database with the user's id.
 
   if (response) {
-    res.send(
-      JSON.stringify({ success: true, id: response })
-    );
+    res.send(JSON.stringify({ success: true, id: response }));
   } else {
     res
       .status(500)
@@ -66,11 +68,13 @@ router.post("/", async (req: any, res) => {
 });
 
 router.put("/", async (req: any, res) => {
-  const [{ userId }] = req.user;
+  const { userId } = req.user;
   const { todoId } = req.body;
 
   if (!userId) {
-    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    res
+      .status(500)
+      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
     return;
   }
 
@@ -90,11 +94,13 @@ router.put("/", async (req: any, res) => {
 });
 
 router.delete("/", async (req: any, res) => {
-  const [{ userId }] = req.user;
+  const { userId } = req.user;
   const { todoId } = req.body;
 
   if (!userId) {
-    res.status(500).send(JSON.stringify({success: false, msg: "Unexpected error."}));
+    res
+      .status(500)
+      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
     return;
   }
 

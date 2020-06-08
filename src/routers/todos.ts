@@ -10,7 +10,7 @@ import { todoSchema } from "../schemas/todo";
 const router = express.Router();
 
 router.get("/", async (req: any, res) => {
-  const [{ username, userId }] = req.user; //The username and userId should come from the user's token.
+  const { username, userId } = req.user; //The username and userId should come from the user's token.
 
   if (!username || !userId) {
     res

@@ -25,7 +25,9 @@ router.post("/", async (req, res) => {
     return;
   }
 
-  const token = jwt.sign({...userDetails}, SECRET); //If they did match, create our token with the details we want. (userId and username)
+  const [{userId, username: user}] = userDetails;
+
+  const token = jwt.sign({userId, username: user}, SECRET); //If they did match, create our token with the details we want. (userId and username)
 
   res.send(JSON.stringify({ success: true, token })); //We send the token to our client.
 });

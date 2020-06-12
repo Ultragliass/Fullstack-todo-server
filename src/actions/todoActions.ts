@@ -8,10 +8,7 @@ Generic type ResultSetHeader is the interface for the mysql2 INSERT, UPDATE, and
 */
 
 export async function getUserTodos(userId: number): Promise<Todo[]> {
-  const [result] = await sql.execute<RowDataPacket[]>(
-    "SELECT id, description, deadline, complete FROM todos WHERE userId = ?",
-    [userId]
-  ); //Selects only the meaningful data for the user's todos.
+  const [result] = await sql.execute<RowDataPacket[]>( "SELECT id, description, deadline, complete FROM todos WHERE userId = ?", [userId]); //Selects only the meaningful data for the user's todos.
 
   return result as Todo[]; //Returns the todos as their corresponding interface.
 }

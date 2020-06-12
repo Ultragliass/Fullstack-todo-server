@@ -23,11 +23,7 @@ router.get("/", async (req: any, res) => {
 
   res.send(
     JSON.stringify({
-      success: true,
-      userData: {
-        todos,
-        username,
-      },
+      success: true, userData: {todos , username,},
     })
   );
 });

@@ -13,19 +13,16 @@ router.get("/", async (req: any, res) => {
   const { username, userId } = req.user; //The username and userId should come from the user's token.
 
   if (!username || !userId) {
-    res
-      .status(500)
-      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
+    res.status(500).send({ success: false, msg: "Unexpected error." });
     return;
   }
 
   const todos = await getUserTodos(userId); //Runs the sql query to get all the user's todos, by his userId.
 
-  res.send(
-    JSON.stringify({
-      success: true, userData: {todos , username,},
-    })
-  );
+  res.send({
+    success: true,
+    userData: { todos, username },
+  });
 });
 
 router.post("/", async (req: any, res) => {
@@ -33,9 +30,7 @@ router.post("/", async (req: any, res) => {
   const { description, deadline } = req.body; //We expect the client to send us a todo.
 
   if (!userId) {
-    res
-      .status(500)
-      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
+    res.status(500).send({ success: false, msg: "Unexpected error." });
     return;
   }
 
@@ -46,20 +41,18 @@ router.post("/", async (req: any, res) => {
 
     const msg = result.error.details[0].message;
 
-    res.status(400).send(JSON.stringify({ success: false, msg }));
+    res.status(400).send({ success: false, msg });
     return;
   }
 
   const response = await addTodo(userId, description, new Date(deadline)); //Adds a new todo to the database with the user's id.
 
   if (response) {
-    res.send(JSON.stringify({ success: true, id: response }));
+    res.send({ success: true, id: response });
   } else {
     res
       .status(500)
-      .send(
-        JSON.stringify({ success: false, msg: "Oops! Something went wrong..." })
-      );
+      .send({ success: false, msg: "Oops! Something went wrong..." });
   }
 });
 
@@ -68,24 +61,18 @@ router.put("/", async (req: any, res) => {
   const { todoId } = req.body;
 
   if (!userId) {
-    res
-      .status(500)
-      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
+    res.status(500).send({ success: false, msg: "Unexpected error." });
     return;
   }
 
   const result = toggleTaskCompletion(todoId, userId); //Toggles a todo's completeion boolean value.
 
   if (result) {
-    res.send(
-      JSON.stringify({ success: true, msg: "Todo toggled successfully." })
-    );
+    res.send({ success: true, msg: "Todo toggled successfully." });
   } else {
     res
       .status(500)
-      .send(
-        JSON.stringify({ success: false, msg: "Oops! Something went wrong..." })
-      );
+      .send({ success: false, msg: "Oops! Something went wrong..." });
   }
 });
 
@@ -94,24 +81,18 @@ router.delete("/", async (req: any, res) => {
   const { todoId } = req.body;
 
   if (!userId) {
-    res
-      .status(500)
-      .send(JSON.stringify({ success: false, msg: "Unexpected error." }));
+    res.status(500).send({ success: false, msg: "Unexpected error." });
     return;
   }
 
   const result = await deleteTodo(todoId, userId); //Delets a specific todo, requires both the todo's id, and the user's id.
 
   if (result) {
-    res.send(
-      JSON.stringify({ success: true, msg: "Todo deleted successfully." })
-    );
+    res.send({ success: true, msg: "Todo deleted successfully." });
   } else {
     res
       .status(500)
-      .send(
-        JSON.stringify({ success: false, msg: "Oops! Something went wrong..." })
-      );
+      .send({ success: false, msg: "Oops! Something went wrong..." });
   }
 });
 

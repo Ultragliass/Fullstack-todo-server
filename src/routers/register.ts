@@ -16,15 +16,13 @@ router.post("/", async (req, res) => {
 
     const msg = result.error.details[0].message;
 
-    res.status(400).send(JSON.stringify({ success: false, msg }));
+    res.status(400).send({ success: false, msg });
     return;
   }
 
   if (await checkIfUserExists(username)) {
     //Checks if the username already exists.
-    res
-      .status(409)
-      .send(JSON.stringify({ success: false, msg: "User already exists." }));
+    res.status(409).send({ success: false, msg: "User already exists." });
     return;
   }
 
@@ -32,7 +30,7 @@ router.post("/", async (req, res) => {
 
   const token = jwt.sign({ username, userId }, SECRET); //Creates a token for the client with the appropriate data. (userId and username)
 
-  res.send(JSON.stringify({ success: true, token }));
+  res.send({ success: true, token });
 });
 
 export { router as register };

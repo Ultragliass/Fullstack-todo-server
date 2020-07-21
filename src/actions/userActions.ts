@@ -7,7 +7,8 @@ export async function checkIfUserExists(username: string): Promise<boolean> {
     [username]
   ); //Returns the id of a user, used only to check if a user already exists.
 
-  if (result.length) { //If the query returns a result, the user already exists.
+  if (result.length) {
+    //If the query returns a result, the user already exists.
     return true;
   }
 
@@ -29,8 +30,8 @@ export async function addUser(
 export async function authorizeUser(
   username: string,
   password: string
-): Promise<RowDataPacket[]> {
-  const [result] = await sql.execute<RowDataPacket[]>(
+): Promise<RowDataPacket> {
+  const [[result]] = await sql.execute<RowDataPacket[]>(
     "SELECT id AS userId, username FROM users WHERE username = ? AND password = ?",
     [username, password]
   ); //Returns the id and username of a user, if their username and password match;
